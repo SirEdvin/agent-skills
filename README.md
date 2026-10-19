@@ -2,9 +2,9 @@
 
 Reusable, domain-independent procedures for AI coding and research agents.
 
-**Status: scaffold only. There are no published skill packages to install yet.**
-`skills/.gitkeep` preserves the intended layout; it is not a skill. Test fixtures
-exist only to exercise validation and are not installable content.
+Portable skill packages with independently runnable synthetic verification fixtures.
+Feature-branch packages are review proposals, not merged releases. Review the selected
+revision before installation; no installation is needed to list or validate packages.
 
 ## Scope
 
@@ -19,27 +19,36 @@ Domain-specific material belongs in the matching specialist library:
 
 ## Skills
 
-No skill packages are published yet. The first package must arrive through a
-reviewed pull request and add a real entry to this catalog.
+| Package | Use when |
+| --- | --- |
+| [bounded-evidence-review](skills/bounded-evidence-review/SKILL.md) | Inspecting large structured evidence with count, nested-value and byte boundaries. |
+| [lifecycle-safe-verification](skills/lifecycle-safe-verification/SKILL.md) | Verifying state and durable artifacts across workspace-removing lifecycle transitions. |
 
 ## Layout
 
 ```text
-skills/                  # Future independent skills/<name>/SKILL.md packages
+skills/                  # Independent skills/<name>/SKILL.md packages
 scripts/                 # Repository validator and synthetic regression tests
 .github/workflows/       # Read-only validation CI
 CONTRIBUTING.md           # Authoring, provenance, validation, and PR policy
 LICENSE                  # MIT
 ```
 
-No grouping manifest or release is advertised before packages exist.
+Packages are discovered from their directories; no grouping manifest or release is required.
 
-## Installation (after skills are published)
+## Discovery and installation
 
-**The commands below are future usage templates, not currently working package
-installations.** Wait for an actual catalog entry, inspect its content and
-license, then set `SKILL_NAME` to its exact directory name. Choose the intended
-agent/profile and installation scope; an installation modifies that target.
+From a checkout of the revision under review, list packages without installation:
+
+```sh
+npx --yes skills@1.7.2 add . --list --full-depth
+```
+
+This listing is tested against the package-bearing feature branch. Default-branch
+remote discovery will not include proposed packages until a maintainer merges them.
+For remote inspection after merge, set `SKILL_NAME` to `bounded-evidence-review` or
+`lifecycle-safe-verification`. Inspect content and license, and choose the intended
+agent/profile and installation scope; installation modifies that target.
 The POSIX shell guards below prevent an unset package name from being used.
 
 With [Hermes](https://hermes-agent.nousresearch.com/docs/user-guide/features/skills):
@@ -67,8 +76,15 @@ npx skills add SirEdvin/agent-skills --skill "${SKILL_NAME:?Set SKILL_NAME to a 
 
 Review the CLI version before executing downloaded tooling. Multi-file packages
 must be installed from a repository package path, not a raw `SKILL.md` URL.
-End-to-end discovery and installation are intentionally deferred until real
-packages exist; this scaffold does not claim those checks have passed.
+Local package discovery and synthetic fixtures are tested without installing skills.
+Remote default-branch inspection and installation are not certified before merge.
+
+Run package fixtures separately from the repository validator:
+
+```sh
+.venv/bin/python -m unittest discover -s skills/bounded-evidence-review/scripts -p 'test_*.py' -v
+.venv/bin/python -m unittest discover -s skills/lifecycle-safe-verification/scripts -p 'test_*.py' -v
+```
 
 ## Validate
 
