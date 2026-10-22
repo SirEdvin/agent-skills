@@ -23,6 +23,7 @@ Domain-specific material belongs in the matching specialist library:
 | --- | --- |
 | [bounded-evidence-review](skills/bounded-evidence-review/SKILL.md) | Inspecting large structured evidence with count, nested-value and byte boundaries. |
 | [lifecycle-safe-verification](skills/lifecycle-safe-verification/SKILL.md) | Verifying state and durable artifacts across workspace-removing lifecycle transitions. |
+| [openspec-readiness-review](skills/openspec-readiness-review/SKILL.md) | Reviewing intent, acceptance, feasibility and work coverage before implementing an OpenSpec change. |
 
 ## Layout
 
@@ -46,8 +47,8 @@ npx --yes skills@1.7.2 add . --list --full-depth
 
 This listing is tested against the package-bearing feature branch. Default-branch
 remote discovery will not include proposed packages until a maintainer merges them.
-For remote inspection after merge, set `SKILL_NAME` to `bounded-evidence-review` or
-`lifecycle-safe-verification`. Inspect content and license, and choose the intended
+For remote inspection after merge, set `SKILL_NAME` to `bounded-evidence-review`,
+`lifecycle-safe-verification`, or `openspec-readiness-review`. Inspect content and license, and choose the intended
 agent/profile and installation scope; installation modifies that target.
 The POSIX shell guards below prevent an unset package name from being used.
 
@@ -85,6 +86,11 @@ Run package fixtures separately from the repository validator:
 .venv/bin/python -m unittest discover -s skills/bounded-evidence-review/scripts -p 'test_*.py' -v
 .venv/bin/python -m unittest discover -s skills/lifecycle-safe-verification/scripts -p 'test_*.py' -v
 ```
+
+The OpenSpec package has a separate [agent evaluation protocol](skills/openspec-readiness-review/references/evaluation.md)
+and synthetic input/expectation pairs. These require semantic review by an agent and
+an evaluator; neither the structural validator nor CI runs that evaluation. The
+package is advisory and does not install OpenSpec, implement changes or grant approval.
 
 ## Validate
 
