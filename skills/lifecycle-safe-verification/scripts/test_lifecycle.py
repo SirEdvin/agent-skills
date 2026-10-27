@@ -1,4 +1,5 @@
-"""Exercise removed-cwd recovery only inside a disposable Git fixture."""
+"""Exercise artifact preservation and removed-cwd recovery in disposable fixtures."""
+import hashlib
 import json
 from pathlib import Path
 import shutil
@@ -9,6 +10,43 @@ import unittest
 
 
 class LifecycleTests(unittest.TestCase):
+    def test_receipt_does_not_preserve_payload(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            work, durable = root / "work", root / "durable"
+            work.mkdir()
+            durable.mkdir()
+            source = work / "evidence.bin"
+            source.write_bytes(b"synthetic evidence\x00\xff")
+            expected = hashlib.sha256(source.read_bytes()).hexdigest()
+            saved = durable / source.name
+            receipt = durable / "receipt.json"
+            receipt.write_text(json.dumps({"required_payload": saved.name,
+                                           "sha256": expected}), encoding="utf-8")
+
+            def verify_payload():
+                recorded = json.loads(receipt.read_text(encoding="utf-8"))
+                payload = durable / recorded["required_payload"]
+                self.assertTrue(payload.is_file(), "required payload missing")
+                self.assertEqual(hashlib.sha256(payload.read_bytes()).hexdigest(),
+                                 recorded["sha256"], "required payload differs")
+
+            # A real receipt and declared digest cannot stand in for the payload.
+            with self.assertRaisesRegex(AssertionError, "required payload missing"):
+                verify_payload()
+            # A symlink into disposable storage is not a preserved payload either.
+            saved.symlink_to(source)
+            self.assertTrue(saved.resolve().is_relative_to(work))
+            saved.unlink()
+            shutil.copy2(source, saved)
+            self.assertFalse(saved.resolve().is_relative_to(work))
+            verify_payload()
+            shutil.rmtree(work)  # Only this test's own disposable directory.
+            verify_payload()
+            saved.write_bytes(b"corrupted")
+            with self.assertRaisesRegex(AssertionError, "required payload differs"):
+                verify_payload()
+
     def test_readback_survives_worktree_removal(self):
         self.assertIsNotNone(shutil.which("git"), "Git is required for this fixture")
         with tempfile.TemporaryDirectory() as directory:
