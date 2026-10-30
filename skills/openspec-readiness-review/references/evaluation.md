@@ -40,8 +40,10 @@ A useful reviewer prompt:
 The corpus includes clean small work, vague quality targets, source conflicts,
 unproven APIs, missing work coverage, stale permission, intentional spec omission,
 dependency cycles, embedded instruction injection, custom research schemas, missing
-removal baseline, and destructive-action uncertainty. It intentionally contains Ready
-cases to detect overblocking as well as defects to detect rubber-stamping.
+removal baseline, destructive-action uncertainty, recovery decomposition with an
+unresolved acceptance decision, and a superseding decision that must not be reopened.
+It intentionally contains Ready cases to detect overblocking as well as defects to
+detect rubber-stamping.
 
 It does not establish full CLI/store compatibility, deterministic model behavior,
 production safety, or real task completion. Test the installed package's discovery

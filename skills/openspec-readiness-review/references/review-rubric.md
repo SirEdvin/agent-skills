@@ -133,6 +133,22 @@ Parallel work is safe only when its dependency and edit boundaries support it; a
 list with no dependencies is not proof of independence. Deliver local tests and docs
 with the relevant work; later integration checks may deliberately span groups.
 
+When reviewing a recovery plan after implementation exposed an acceptance conflict,
+carry the unresolved decision into every affected successor's readiness assessment.
+Renaming a task, restoring its original text, creating a research child or splitting
+implementation from verification does not resolve a behavior or authorization choice.
+Record the conflicting assertions, the decision needed, its owner and the evidence
+that would resolve it. Do not call the affected implementation Ready merely because
+its new dependencies are complete; unrelated work may still be independently ready.
+
+Check for a later, explicit scoped decision before carrying the blocker forward.
+An earlier approval for a different defect does not cover the new conflict, but a
+verified superseding decision must not trigger the same clarification again. Map
+superseded assertions to their authorized current replacements, retain applicable
+safety and historical-compatibility obligations, and recheck the affected coverage.
+Readiness to implement that repair is not evidence its replacement tests passed.
+This review reports the recovery decision; it does not requeue or alter task state.
+
 ## 7. Decisions, freshness and handoff
 
 Resolve questions that change what gets built before declaring it ready. A documented
