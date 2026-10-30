@@ -261,6 +261,48 @@
           "authority": "Confirmed security policy, revision B"
         }
       ]
+    },
+    {
+      "id": "C14",
+      "description": "Recovery decomposition leaves the acceptance decision unresolved",
+      "notice": "SYNTHETIC CLOSED-WORLD REVIEW FIXTURE. Review only; no implementation, task transitions or network calls. Inputs are complete and unchanged during review.",
+      "project": "fixture/report-cli",
+      "change": "resume-output-refactor",
+      "schema": "spec-driven; review readiness of the recovery plan before remaining implementation",
+      "source_request": "Refactor report formatting while preserving the approved output policy. Review the recovery plan only.",
+      "source_decisions": [
+        {"source": "Output owner decision D1", "text": "Empty reports must produce a header-only table."},
+        {"source": "Acceptance owner decision D2", "text": "The existing empty-report assertion requiring zero output must remain a current acceptance gate."}
+      ],
+      "artifacts": {
+        "proposal.md": "Resume formatting refactor without changing report policy or dropping acceptance assertions.",
+        "design.md": "D1 and D2 conflict. Neither supersedes the other; the output owner must reconcile them with the acceptance owner. Existing cache optimization approval addresses a different defect.",
+        "tasks.md": "Recovery child R restores original requirements and checkpoint. Implementation child I depends on R; verification child V depends on I. I must deliver the approved formatter and V must test empty/nonempty output plus unchanged exit codes.",
+        "recovery.md": "R completed: original text and checkpoint recovered. No output-policy decision was obtained. New task IDs and a clean worktree are the only changes."
+      },
+      "evidence": "The conflict was reproduced before decomposition. Both assertion forms are technically feasible in the existing test harness; feasibility research cannot choose the policy. No other readiness gap or independent-review requirement exists.",
+      "approval": "Earlier cache optimization approval does not mention empty-report output. No subsequent decision reconciles D1 and D2."
+    },
+    {
+      "id": "C15",
+      "description": "Explicit recovery decision resolves the old conflict without proving test execution",
+      "notice": "SYNTHETIC CLOSED-WORLD REVIEW FIXTURE. Review only; no implementation, task transitions or network calls. Inputs are complete and unchanged during review.",
+      "project": "fixture/report-cli",
+      "change": "resume-output-refactor",
+      "schema": "spec-driven; review readiness of the recovery plan before remaining implementation",
+      "source_request": "Review the revised formatter recovery plan against decision D3, not the superseded empty-output conflict.",
+      "source_decisions": [
+        {"source": "Joint output/acceptance owner decision D3", "text": "D3 explicitly supersedes the zero-output gate in D2. Empty reports must produce the D1 header-only table. Update that fixture, preserve nonempty output and exit-code assertions, and retain the original fixture as historical evidence."}
+      ],
+      "artifacts": {
+        "proposal.md": "Resume formatting refactor using D3; no new report policy.",
+        "specs/report-output/spec.md": "Empty reports SHALL contain only the header. Nonempty report bytes and all exit codes SHALL remain unchanged.",
+        "design.md": "Current revision C applies D3 to the formatter and its acceptance mapping. No unresolved behavior choice remains.",
+        "tasks.md": "I: replace only the obsolete empty-output assertion and implement the formatter; verify header-only empty output, exact nonempty output and unchanged exit codes. V depends on I and reruns the same acceptance tests. Preserve the original fixture in immutable historical evidence.",
+        "assertion-map.md": "Empty zero-output gate: superseded by D3 header-only assertion. Nonempty bytes and exit codes: unchanged current coverage. Original zero-output fixture: historical evidence only, not a passing current test."
+      },
+      "evidence": "Existing local test harness supports all named cases; no external capability gap, extra policy or required independent review. Replacement tests are planned, not yet run. Revision C is stable during review.",
+      "approval": "D3 explicitly permits the scoped fixture repair for implementation revision C. This invocation still requests review only."
     }
   ]
 }

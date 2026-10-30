@@ -165,6 +165,36 @@
         "treat either confirmed source as merely an agent-generated draft",
         "invent decision owner"
       ]
+    },
+    {
+      "id": "C14",
+      "verdict": "Needs clarification",
+      "must_identify": [
+        "D1 header-only and D2 zero-output acceptance remain incompatible",
+        "recovered text and completed research child do not resolve the policy decision",
+        "output owner must reconcile with acceptance owner before affected implementation is ready",
+        "cache optimization approval is unrelated"
+      ],
+      "must_not": [
+        "declare implementation Ready because dependencies completed",
+        "silently choose one policy",
+        "requeue or change tasks"
+      ]
+    },
+    {
+      "id": "C15",
+      "verdict": "Ready",
+      "must_identify": [
+        "D3 explicitly resolves the prior conflict for revision C",
+        "current assertion mapping preserves nonempty output and exit codes",
+        "historical fixture preservation does not establish current test execution",
+        "review only despite scoped implementation approval"
+      ],
+      "must_not": [
+        "ask for the already supplied D3 decision again",
+        "claim replacement tests passed",
+        "implement or change task state"
+      ]
     }
   ]
 }
