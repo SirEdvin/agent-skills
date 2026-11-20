@@ -4,7 +4,7 @@ description: Use when completion, handoff or cleanup may remove a workspace. Pre
 license: MIT
 compatibility: The disposable regression fixture requires Python 3.12 or newer and Git.
 metadata:
-  version: "1.0.1"
+  version: "1.0.2"
 ---
 
 # Lifecycle-safe verification
@@ -16,6 +16,13 @@ transition that may delete or relocate the current working directory. This skill
 not authorize cleanup, lifecycle transitions, status changes, process termination or
 retries. Follow the platform's actual lifecycle contract; not every transition removes
 a worktree, and a successful transition need not stop a worker process.
+
+## Plan closure before a finite run ends
+
+For long or multi-stage tasks, load this procedure during planning, not only after
+implementation. Follow [closure planning and recovery](references/closure-planning.md)
+to budget for evidence preservation, publication and exact-state readback. This does
+not permit reducing acceptance gates, increasing shared budgets or completing early.
 
 ## Before the transition
 
